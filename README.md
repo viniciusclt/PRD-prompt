@@ -1,4 +1,3 @@
-
 # PRD Prompt Clone
 
 Uma cópia exata da plataforma [PRD-Prompt](https://www.prdprompt.com.br/), especializada em criar documentos de requisitos de produto (PRDs) e prompts técnicos usando inteligência artificial.
@@ -177,3 +176,4 @@ Desenvolvido com ❤️ usando Next.js e TypeScript
 
 **Status**: ✅ Funcional e pronto para produção
 **Última atualização**: Agosto 2024
+
