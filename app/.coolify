@@ -1,0 +1,7 @@
+
+# Coolify Configuration
+buildCommand=cd app && yarn install && npx prisma generate && yarn build
+startCommand=cd app && ./scripts/start.sh
+installCommand=cd app && yarn install
+healthcheckPath=/api/health
+port=3000
