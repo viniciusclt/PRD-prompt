@@ -5,25 +5,25 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222.2 84% 4.9%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96%;
-    --accent-foreground: 222.2 84% 4.9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
+    --background: 247 247 247; /* rgb(247, 247, 247) */
+    --foreground: 15 23 42; /* rgb(15, 23, 42) */
+    --card: 255 255 255; /* White cards */
+    --card-foreground: 15 23 42;
+    --popover: 255 255 255;
+    --popover-foreground: 15 23 42;
+    --primary: 79 70 229; /* rgb(79, 70, 229) - Purple primary */
+    --primary-foreground: 255 255 255;
+    --secondary: 248 250 252; /* rgb(248, 250, 252) */
+    --secondary-foreground: 15 23 42;
+    --muted: 226 232 240; /* rgb(226, 232, 240) */
+    --muted-foreground: 100 116 139; /* rgb(100, 116, 139) */
+    --accent: 95 87 214; /* rgb(95, 87, 214) - Purple accent */
+    --accent-foreground: 255 255 255;
+    --destructive: 239 68 68;
+    --destructive-foreground: 255 255 255;
+    --border: 226 232 240;
+    --input: 255 255 255;
+    --ring: 79 70 229;
     --radius: 0.5rem;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
@@ -33,20 +33,20 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 84% 4.9%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --background: 15 23 42;
+    --foreground: 248 250 252;
+    --card: 31 41 55;
+    --card-foreground: 248 250 252;
+    --popover: 31 41 55;
+    --popover-foreground: 248 250 252;
+    --primary: 95 87 214;
+    --primary-foreground: 15 23 42;
+    --secondary: 31 41 55;
+    --secondary-foreground: 248 250 252;
+    --muted: 31 41 55;
+    --muted-foreground: 100 116 139;
+    --accent: 31 41 55;
+    --accent-foreground: 248 250 252;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
     --border: 217.2 32.6% 17.5%;
@@ -98,6 +98,48 @@
 
 .animate-count-up {
   animation: countUp 0.8s ease-out;
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl text-white h-10 px-4 py-2;
+  }
+
+  .btn-primary-large {
+    @apply btn-primary h-11 text-lg px-8 py-6 shadow-2xl hover:shadow-blue-500/25 relative overflow-hidden;
+  }
+
+  .page-container {
+    @apply min-h-screen;
+  }
+
+  .content-wrapper {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .card-white {
+    @apply bg-white border border-gray-200 rounded-lg shadow-sm;
+  }
+
+  .text-primary-purple {
+    @apply text-purple-600 font-bold;
+  }
+
+  .text-secondary-gray {
+    @apply text-gray-600;
+  }
+
+  .text-heading {
+    @apply text-gray-900 font-semibold;
+  }
+
+  .original-gradient-primary {
+    @apply bg-gradient-to-r from-blue-600 to-purple-600;
+  }
+
+  .original-hover-gradient {
+    @apply hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl;
+  }
 }
 
 .glass-card {

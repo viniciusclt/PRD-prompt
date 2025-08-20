@@ -85,12 +85,189 @@ export default function SuperPromptPage() {
   }
 
   const handleGenerateSuperPrompt = async () => {
+    if (!projectType || !description || !visualStyle) {
+      alert('Por favor, preencha os campos obrigatórios: Tipo de Projeto, Descrição e Estilo Visual')
+      return
+    }
+
     setIsLoading(true)
-    // Simulate API call
-    setTimeout(() => {
+    
+    try {
+      const prompt = `Crie um ${projectType.toLowerCase()} com as seguintes características:
+
+DESCRIÇÃO: ${description}
+
+ESTILO VISUAL: ${visualStyle}
+
+PALETA DE CORES: ${selectedPalette || 'A definir pela IA'}
+
+${specialElements.length > 0 ? `ELEMENTOS ESPECIAIS: ${specialElements.join(', ')}` : ''}
+
+${targetAudience ? `PÚBLICO-ALVO: ${targetAudience}` : ''}
+
+${objectives ? `OBJETIVOS: ${objectives}` : ''}
+
+${specificFeatures ? `FUNCIONALIDADES ESPECÍFICAS: ${specificFeatures}` : ''}
+
+${includeHeroVideo ? 'INCLUIR: Vídeo hero na página inicial' : ''}
+
+Por favor, gere um prompt técnico detalhado para desenvolvimento usando ferramentas modernas como React, Next.js, Tailwind CSS, garantindo responsividade e uma experiência de usuário excelente.`
+
+      const response = await fetch('/api/generate-prompt', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          prompt: prompt
+        }),
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        
+        // Criar uma nova aba com o resultado
+        const newWindow = window.open('', '_blank')
+        if (newWindow) {
+          newWindow.document.write(`
+            <!DOCTYPE html>
+            <html lang="pt-BR">
+            <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Super Prompt Gerado - PRD Prompt</title>
+              <script src="https://cdn.tailwindcss.com"></script>
+            </head>
+            <body class="bg-gray-100 p-6">
+              <div class="max-w-5xl mx-auto">
+                <header class="mb-8 text-center">
+                  <h1 class="text-4xl font-bold text-gray-900 mb-2">🚀 Super Prompt Gerado</h1>
+                  <p class="text-gray-600 text-lg">Seu prompt técnico otimizado está pronto para uso!</p>
+                </header>
+                
+                <div class="bg-white rounded-lg shadow-lg p-8 mb-6">
+                  <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                    📋 Especificações do Projeto
+                  </h2>
+                  <div class="grid md:grid-cols-3 gap-4 text-sm">
+                    <div class="bg-gray-50 p-3 rounded"><strong>Tipo:</strong><br>${projectType}</div>
+                    <div class="bg-gray-50 p-3 rounded"><strong>Estilo:</strong><br>${visualStyle}</div>
+                    ${selectedPalette ? `<div class="bg-gray-50 p-3 rounded"><strong>Paleta:</strong><br>${selectedPalette}</div>` : '<div class="bg-gray-50 p-3 rounded"><strong>Paleta:</strong><br>A definir pela IA</div>'}
+                    ${targetAudience ? `<div class="bg-gray-50 p-3 rounded"><strong>Público:</strong><br>${targetAudience}</div>` : ''}
+                    ${objectives ? `<div class="bg-gray-50 p-3 rounded"><strong>Objetivos:</strong><br>${objectives}</div>` : ''}
+                    ${includeHeroVideo ? '<div class="bg-gray-50 p-3 rounded"><strong>Extra:</strong><br>Vídeo Hero</div>' : ''}
+                  </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                  <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-semibold text-gray-800 flex items-center gap-2">
+                      ✨ Prompt Técnico Otimizado
+                    </h2>
+                    <button onclick="navigator.clipboard.writeText(document.getElementById('generated-prompt').innerText).then(() => alert('✅ Prompt copiado!'))" 
+                            class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+                      📋 Copiar Prompt
+                    </button>
+                  </div>
+                  <div id="generated-prompt" class="bg-gray-50 p-6 rounded-lg border-l-4 border-gradient-to-r from-blue-600 to-purple-600 whitespace-pre-wrap text-sm leading-relaxed max-h-96 overflow-y-auto">
+${data.generatedPrompt || prompt}
+                  </div>
+                  
+                  <div class="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                    <h3 class="font-semibold text-blue-800 mb-2">💡 Como usar este prompt:</h3>
+                    <ol class="text-sm text-blue-700 space-y-1">
+                      <li>1. Copie o prompt acima</li>
+                      <li>2. Cole em sua ferramenta de IA favorita (ChatGPT, Claude, Cursor, etc.)</li>
+                      <li>3. Ajuste conforme necessário para seu projeto específico</li>
+                      <li>4. Execute e desenvolva seu projeto!</li>
+                    </ol>
+                  </div>
+                </div>
+                
+                <div class="mt-8 text-center">
+                  <button onclick="window.close()" 
+                          class="bg-gray-600 text-white px-8 py-3 rounded-lg hover:bg-gray-700 transition-colors shadow-lg">
+                    Fechar Janela
+                  </button>
+                </div>
+              </div>
+            </body>
+            </html>
+          `)
+          newWindow.document.close()
+        }
+        
+        alert('✅ Super Prompt gerado com sucesso! Uma nova aba foi aberta com o resultado.')
+      } else {
+        throw new Error('Falha ao gerar o prompt')
+      }
+    } catch (error) {
+      console.error('Erro ao gerar prompt:', error)
+      // Se a API falhar, exibir o prompt básico mesmo assim
+      const basicPrompt = `Crie um ${projectType.toLowerCase()} com as seguintes características:
+
+DESCRIÇÃO: ${description}
+ESTILO VISUAL: ${visualStyle}
+PALETA DE CORES: ${selectedPalette || 'A definir pela IA'}
+${specialElements.length > 0 ? `ELEMENTOS ESPECIAIS: ${specialElements.join(', ')}` : ''}
+${targetAudience ? `PÚBLICO-ALVO: ${targetAudience}` : ''}
+${objectives ? `OBJETIVOS: ${objectives}` : ''}
+${specificFeatures ? `FUNCIONALIDADES ESPECÍFICAS: ${specificFeatures}` : ''}
+${includeHeroVideo ? 'INCLUIR: Vídeo hero na página inicial' : ''}
+
+Por favor, gere um prompt técnico detalhado para desenvolvimento usando ferramentas modernas como React, Next.js, Tailwind CSS, garantindo responsividade e uma experiência de usuário excelente.`
+
+      // Criar uma nova aba com o prompt básico
+      const newWindow = window.open('', '_blank')
+      if (newWindow) {
+        newWindow.document.write(`
+          <!DOCTYPE html>
+          <html lang="pt-BR">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Super Prompt Gerado - PRD Prompt</title>
+            <script src="https://cdn.tailwindcss.com"></script>
+          </head>
+          <body class="bg-gray-100 p-6">
+            <div class="max-w-5xl mx-auto">
+              <header class="mb-8 text-center">
+                <h1 class="text-4xl font-bold text-gray-900 mb-2">🚀 Super Prompt Gerado</h1>
+                <p class="text-gray-600 text-lg">Seu prompt técnico está pronto para uso!</p>
+              </header>
+              
+              <div class="bg-white rounded-lg shadow-lg p-8">
+                <div class="flex items-center justify-between mb-6">
+                  <h2 class="text-2xl font-semibold text-gray-800 flex items-center gap-2">
+                    ✨ Prompt Técnico
+                  </h2>
+                  <button onclick="navigator.clipboard.writeText(document.getElementById('generated-prompt').innerText).then(() => alert('✅ Prompt copiado!'))" 
+                          class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+                    📋 Copiar Prompt
+                  </button>
+                </div>
+                <div id="generated-prompt" class="bg-gray-50 p-6 rounded-lg border-l-4 border-blue-500 whitespace-pre-wrap text-sm leading-relaxed">
+${basicPrompt}
+                </div>
+              </div>
+              
+              <div class="mt-8 text-center">
+                <button onclick="window.close()" 
+                        class="bg-gray-600 text-white px-8 py-3 rounded-lg hover:bg-gray-700 transition-colors shadow-lg">
+                  Fechar Janela
+                </button>
+              </div>
+            </div>
+          </body>
+          </html>
+        `)
+        newWindow.document.close()
+      }
+      
+      alert('✅ Super Prompt gerado! (Versão básica - API não disponível)')
+    } finally {
       setIsLoading(false)
-      alert('Super Prompt gerado com sucesso! (Funcionalidade completa será implementada)')
-    }, 3000)
+    }
   }
 
   return (

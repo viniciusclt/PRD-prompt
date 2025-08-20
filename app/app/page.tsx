@@ -15,18 +15,30 @@ export default function HomePage() {
     if (session) {
       router.push('/dashboard')
     } else {
-      router.push('/login')
+      router.push('/vendas') // Redirect to sales page instead of login
     }
   }, [session, status, router])
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <div className="text-center">
-        <h1 className="text-3xl font-bold gradient-primary bg-clip-text text-transparent mb-4">
+        <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center mx-auto mb-6">
+          <span className="text-white font-bold text-2xl">P</span>
+        </div>
+        
+        <h1 className="text-4xl font-bold text-gray-900 mb-2">
           PRD-Prompt
         </h1>
-        <div className="animate-spin w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full mx-auto"></div>
-        <p className="text-gray-600 mt-4">Carregando...</p>
+        
+        <p className="text-gray-600 mb-8">Transforme ideias em produtos digitais</p>
+        
+        <div className="flex items-center justify-center space-x-2 mb-4">
+          <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></div>
+          <div className="w-2 h-2 bg-purple-600 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+          <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+        </div>
+        
+        <p className="text-gray-500 text-sm">Carregando sua experiência...</p>
       </div>
     </div>
   )
