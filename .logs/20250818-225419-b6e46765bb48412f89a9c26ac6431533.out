@@ -1,0 +1,2 @@
+app/api/auth/[...nextauth]/route.ts(64,22): error TS2339: Property 'id' does not exist on type '{ name?: string | null | undefined; email?: string | null | undefined; image?: string | null | undefined; }'.
+exit_code=2

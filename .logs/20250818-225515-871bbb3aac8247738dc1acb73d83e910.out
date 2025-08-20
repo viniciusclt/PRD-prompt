@@ -1,0 +1,75 @@
+  ▲ Next.js 14.2.28
+  - Local:        http://localhost:3000
+  - Environments: .env
+  - Experiments (use with caution):
+    · outputFileTracingRoot
+
+ ✓ Starting...
+ ✓ Ready in 1524ms
+ ○ Compiling / ...
+ ✓ Compiled / in 2.4s (552 modules)
+ GET / 200 in 2458ms
+ ✓ Compiled in 353ms (280 modules)
+ ○ Compiling /api/auth/[...nextauth] ...
+ ✓ Compiled /api/auth/[...nextauth] in 665ms (506 modules)
+ GET /api/auth/providers 200 in 1115ms
+ GET / 200 in 60ms
+ GET /api/auth/session 200 in 29ms
+ GET /api/auth/session 200 in 18ms
+ ○ Compiling /login ...
+ ✓ Compiled /login in 508ms (856 modules)
+ ✓ Compiled /signup in 258ms (862 modules)
+ GET /signup 200 in 345ms
+ GET /api/auth/session 200 in 44ms
+ GET /api/auth/session 200 in 15ms
+ GET /login 200 in 34ms
+ GET /api/auth/session 200 in 26ms
+ GET /api/auth/session 200 in 15ms
+ GET /api/auth/csrf 200 in 34ms
+ ✓ Compiled /api/signup in 191ms (578 modules)
+ POST /api/signup 200 in 627ms
+ GET / 200 in 51ms
+ GET /api/auth/csrf 200 in 39ms
+ POST /api/auth/callback/credentials 302 in 292ms
+ ○ Compiling /dashboard ...
+ ✓ Compiled /dashboard in 512ms (962 modules)
+ GET /dashboard 200 in 594ms
+ GET / 200 in 35ms
+ GET /dashboard 200 in 52ms
+ GET /api/auth/session 200 in 39ms
+ GET /api/auth/session 200 in 20ms
+ GET /api/auth/session 200 in 17ms
+ GET /api/auth/session 200 in 16ms
+ GET /api/auth/session 200 in 17ms
+ ✓ Compiled /_not-found in 392ms (965 modules)
+ GET /super-prompt 404 in 501ms
+ GET /generate-prd 404 in 504ms
+ GET /showcase 404 in 488ms
+ GET /idea-catalog 404 in 486ms
+ GET /generate-prompt 404 in 490ms
+ GET /my-documents 404 in 481ms
+ GET /api/auth/session 200 in 77ms
+ GET /api/auth/session 200 in 18ms
+ GET /api/auth/session 200 in 16ms
+ GET /api/auth/session 200 in 19ms
+ GET /api/auth/session 200 in 18ms
+ GET /api/auth/session 200 in 20ms
+ GET /api/auth/session 200 in 30ms
+ GET /api/auth/session 200 in 22ms
+ GET /api/auth/session 200 in 19ms
+ GET /api/auth/session 200 in 20ms
+ GET /api/auth/session 200 in 17ms
+ GET /api/auth/session 200 in 30ms
+ GET /api/auth/session 200 in 17ms
+ GET /api/auth/session 200 in 16ms
+ GET /api/auth/session 200 in 15ms
+ GET /api/auth/session 200 in 16ms
+ GET /api/auth/session 200 in 17ms
+ GET /api/auth/session 200 in 27ms
+ GET /api/auth/session 200 in 15ms
+ ✓ Compiled in 317ms (353 modules)
+ ✓ Compiled in 226ms (353 modules)
+ ✓ Compiled in 580ms (351 modules)
+ ✓ Compiled in 710ms (351 modules)
+ ✓ Compiled in 248ms (351 modules)
+[?25h

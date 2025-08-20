@@ -4,8 +4,9 @@ const path = require('path');
 const nextConfig = {
   distDir: process.env.NEXT_DIST_DIR || '.next',
   output: 'standalone',
+  outputFileTracingRoot: path.join(__dirname, '../'),
   experimental: {
-    outputFileTracingRoot: path.join(__dirname, '../'),
+    // Outras configurações experimentais, se houver
   },
   eslint: {
     ignoreDuringBuilds: true,

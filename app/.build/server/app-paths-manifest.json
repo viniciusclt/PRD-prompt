@@ -1,0 +1,15 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/api/signup/route": "app/api/signup/route.js",
+  "/generate-prd/page": "app/generate-prd/page.js",
+  "/idea-catalog/page": "app/idea-catalog/page.js",
+  "/generate-prompt/page": "app/generate-prompt/page.js",
+  "/login/page": "app/login/page.js",
+  "/my-documents/page": "app/my-documents/page.js",
+  "/page": "app/page.js",
+  "/showcase/page": "app/showcase/page.js",
+  "/signup/page": "app/signup/page.js",
+  "/super-prompt/page": "app/super-prompt/page.js",
+  "/dashboard/page": "app/dashboard/page.js"
+}
