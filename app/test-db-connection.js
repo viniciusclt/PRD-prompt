@@ -28,11 +28,11 @@ async function testConnectionAttempt(hostname) {
     const result = await client.query('SELECT NOW() as current_time');
     console.log('Query executed successfully. Current time from DB:', result.rows[0].current_time);
     client.release();
-    return true; // Conexão bem-sucedida
+    return { success: true, errorCode: null }; // Conexão bem-sucedida
   } catch (error) {
     console.error(`FAILURE: Failed to connect using hostname ${hostname}: ${error.message}`);
     console.error('Error details:', error);
-    if (error.code === 'ENOTFOUND') {
+    if (error.code === 'ENOTFOUND' || error.code === 'EAI_AGAIN') {
       console.error(`Hint: Host "${hostname}" not found. This hostname might be incorrect or unreachable.`);
     } else if (error.code === 'ECONNREFUSED') {
       console.error('Hint: Connection refused. Database might not be running or not listening on port 5432.');
@@ -41,7 +41,7 @@ async function testConnectionAttempt(hostname) {
     } else if (error.code === '3D000') {
       console.error('Hint: Database does not exist. Check the database name in your connection string.');
     }
-    return false; // Conexão falhou
+    return { success: false, errorCode: error.code }; // Conexão falhou, retorna o código do erro
   } finally {
     await pool.end(); // Fecha o pool de conexões após cada tentativa
   }
@@ -49,17 +49,19 @@ async function testConnectionAttempt(hostname) {
 
 async function runAllConnectionTests() {
   for (const hostname of HOSTNAMES_TO_TRY) {
-    const success = await testConnectionAttempt(hostname);
+    const { success, errorCode } = await testConnectionAttempt(hostname); // Recebe o objeto com sucesso e código de erro
     if (success) {
       console.log(`\nFinal result: Database connection successful with hostname "${hostname}".`);
       return; // Sai se uma conexão for bem-sucedida
     }
-    // Se falhou com ENOTFOUND, tenta o próximo hostname.
-    // Se falhou por outro motivo (senha, recusado), não tenta o próximo, pois o problema é mais profundo.
-    if (hostname === HOSTNAMES_TO_TRY[0] && success === false && error && error.code !== 'ENOTFOUND') {
-        console.log("Connection failed for a reason other than 'hostname not found'. Stopping further attempts.");
+
+    // Se falhou com o primeiro hostname e o erro NÃO é de hostname não encontrado,
+    // então é um problema mais profundo e não adianta tentar o próximo hostname.
+    if (hostname === HOSTNAMES_TO_TRY[0] && errorCode !== 'EAI_AGAIN' && errorCode !== 'ENOTFOUND') {
+        console.error(`\nFinal result: Connection failed for hostname "${hostname}" with error code "${errorCode}". This indicates a problem beyond just hostname resolution. Stopping further attempts.`);
         return;
     }
+    // Se for EAI_AGAIN/ENOTFOUND, ou se for a segunda tentativa, continua para o próximo hostname (ou termina o loop).
   }
   console.error("\nFinal result: All connection attempts failed. Please review the hostnames, credentials, and database status.");
 }
