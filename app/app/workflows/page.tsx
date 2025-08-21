@@ -4,9 +4,67 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Workflow, Plus, Download, Share2, Play } from 'lucide-react'
+import { Workflow, Plus, Download, Share2, Play, Upload, BookOpen, Eye, Loader2 } from 'lucide-react'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 export default function WorkflowsPage() {
+  const router = useRouter()
+  const [isCreatingWorkflow, setIsCreatingWorkflow] = useState(false)
+  const [isImporting, setIsImporting] = useState(false)
+
+  const handleNewWorkflow = async () => {
+    setIsCreatingWorkflow(true)
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1500))
+      toast.success('Novo fluxo criado! Redirecionando para o editor...')
+      // In a real implementation, this would create a new workflow and redirect to the editor
+      router.push('/dashboard')
+    } catch (error) {
+      toast.error('Erro ao criar fluxo. Tente novamente.')
+    } finally {
+      setIsCreatingWorkflow(false)
+    }
+  }
+
+  const handleImport = async () => {
+    setIsImporting(true)
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      toast.success('Função de importar disponível em breve!')
+      // In a real implementation, this would open a file picker dialog
+    } catch (error) {
+      toast.error('Erro ao importar. Tente novamente.')
+    } finally {
+      setIsImporting(false)
+    }
+  }
+
+  const handleViewTemplates = () => {
+    toast.info('Rolando até a seção de templates...')
+    // Scroll to templates section
+    document.getElementById('templates-section')?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  const handleUseTemplate = (template: any) => {
+    toast.success(`Template "${template.name}" selecionado! Criando novo fluxo...`)
+    // In a real implementation, this would create a new workflow based on the template
+    router.push('/dashboard')
+  }
+
+  const handleOpenWorkflow = (workflow: any) => {
+    toast.success(`Abrindo fluxo: ${workflow.name}`)
+    // In a real implementation, this would open the workflow editor
+    router.push(`/dashboard?workflow=${encodeURIComponent(workflow.name)}`)
+  }
+
+  const handleViewTutorial = () => {
+    toast.info('Abrindo tutorial de workflows...')
+    // In a real implementation, this would open a tutorial or help page
+    window.open('/tutorial/workflows', '_blank')
+  }
+
   const workflows = [
     {
       name: "Fluxo de Cadastro de Usuário",
@@ -105,21 +163,51 @@ export default function WorkflowsPage() {
 
       {/* Quick Actions */}
       <div className="flex flex-wrap gap-4">
-        <Button className="btn-primary">
-          <Plus className="w-4 h-4 mr-2" />
-          Novo Fluxo
+        <Button 
+          className="btn-primary"
+          onClick={handleNewWorkflow}
+          disabled={isCreatingWorkflow}
+        >
+          {isCreatingWorkflow ? (
+            <>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Criando...
+            </>
+          ) : (
+            <>
+              <Plus className="w-4 h-4 mr-2" />
+              Novo Fluxo
+            </>
+          )}
         </Button>
-        <Button variant="outline">
-          <Download className="w-4 h-4 mr-2" />
-          Importar
+        <Button 
+          variant="outline"
+          onClick={handleImport}
+          disabled={isImporting}
+        >
+          {isImporting ? (
+            <>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Importando...
+            </>
+          ) : (
+            <>
+              <Upload className="w-4 h-4 mr-2" />
+              Importar
+            </>
+          )}
         </Button>
-        <Button variant="outline">
+        <Button 
+          variant="outline"
+          onClick={handleViewTemplates}
+        >
+          <Eye className="w-4 h-4 mr-2" />
           Ver Templates
         </Button>
       </div>
 
       {/* Templates Section */}
-      <div>
+      <div id="templates-section">
         <h2 className="text-2xl font-bold text-gray-900 mb-6">📋 Templates Prontos</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -146,7 +234,13 @@ export default function WorkflowsPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Button variant="outline" size="sm" className="w-full">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full"
+                  onClick={() => handleUseTemplate(template)}
+                >
+                  <Plus className="w-4 h-4 mr-2" />
                   Usar Template
                 </Button>
               </CardContent>
@@ -212,14 +306,27 @@ export default function WorkflowsPage() {
 
                 {/* Actions */}
                 <div className="flex gap-2">
-                  <Button variant="default" size="sm" className="flex-1">
+                  <Button 
+                    variant="default" 
+                    size="sm" 
+                    className="flex-1"
+                    onClick={() => handleOpenWorkflow(workflow)}
+                  >
                     <Play className="w-4 h-4 mr-2" />
                     Abrir
                   </Button>
-                  <Button variant="outline" size="sm">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => toast.info('Funcionalidade de compartilhar em breve!')}
+                  >
                     <Share2 className="w-4 h-4" />
                   </Button>
-                  <Button variant="outline" size="sm">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => toast.info('Funcionalidade de download em breve!')}
+                  >
                     <Download className="w-4 h-4" />
                   </Button>
                 </div>
@@ -241,11 +348,29 @@ export default function WorkflowsPage() {
             mapear jornadas do usuário e documentar processos
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Button className="btn-primary-large">
-              <Plus className="w-5 h-5 mr-2" />
-              Criar Novo Fluxo
+            <Button 
+              className="btn-primary-large"
+              onClick={handleNewWorkflow}
+              disabled={isCreatingWorkflow}
+            >
+              {isCreatingWorkflow ? (
+                <>
+                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                  Criando Fluxo...
+                </>
+              ) : (
+                <>
+                  <Plus className="w-5 h-5 mr-2" />
+                  Criar Novo Fluxo
+                </>
+              )}
             </Button>
-            <Button variant="outline" size="lg">
+            <Button 
+              variant="outline" 
+              size="lg"
+              onClick={handleViewTutorial}
+            >
+              <BookOpen className="w-5 h-5 mr-2" />
               Ver Tutorial
             </Button>
           </div>

@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Badge } from '@/components/ui/badge'
-import { Star, Palette } from 'lucide-react'
+import { Star, Palette, AlertTriangle, Zap } from 'lucide-react'
 
 export default function SuperPromptPage() {
   const [projectType, setProjectType] = useState('')
@@ -271,39 +271,56 @@ ${basicPrompt}
   }
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center gap-3 mb-4">
-          <h1 className="text-3xl font-bold text-gray-900">
-            Super Prompt
-          </h1>
-          <Badge variant="default">NEW</Badge>
+    <div className="space-y-6">
+      {/* Header com ícone do Super Prompt */}
+      <div className="text-center mb-8">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-blue-600 mb-4 shadow-lg">
+          <Zap className="w-8 h-8 text-white" />
         </div>
-        <p className="text-gray-600">
-          Crie prompts avançados com customização visual completa e seleção de paletas de cores
+        <h1 className="text-4xl font-bold text-gray-900 mb-2">
+          Super Prompt
+        </h1>
+        <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+          Crie prompts ultra-detalhados para design de interfaces com especificações técnicas e visuais completas
         </p>
       </div>
 
-      <Card className="glass-card">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Star className="w-5 h-5 text-indigo-500" />
-            Configuração Avançada
-          </CardTitle>
-          <CardDescription>
-            Configure todos os aspectos do seu projeto para gerar um prompt super detalhado
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-8">
-          {/* Project Type */}
+      {/* Aviso de Funcionalidade em Teste */}
+      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+        <div className="flex items-start gap-3">
+          <AlertTriangle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+          <div>
+            <h3 className="text-sm font-semibold text-yellow-800 mb-1">
+              ⚠️ Funcionalidade em Fase de Teste
+            </h3>
+            <p className="text-sm text-yellow-700">
+              Esta é uma nova funcionalidade experimental. Estamos continuamente melhorando-a com base no feedback dos usuários. Se encontrar algum problema ou tiver sugestões, entre em contato conosco.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Configuração Avançada */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div className="flex items-center gap-2 mb-2">
+          <Star className="w-5 h-5 text-purple-500" />
+          <h2 className="text-xl font-semibold text-gray-900">Configuração Avançada</h2>
+        </div>
+        <p className="text-gray-600 text-sm mb-6">
+          Configure todos os aspectos do seu projeto para gerar um prompt super detalhado
+        </p>
+
+        <div className="space-y-6">
+          {/* Tipo de Projeto */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700">
+            <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+              <Zap className="w-4 h-4 text-purple-500" />
               Tipo de Projeto
             </label>
+            <p className="text-xs text-gray-500 mb-2">Selecione o tipo de projeto que você deseja criar</p>
             <Select value={projectType} onValueChange={setProjectType}>
-              <SelectTrigger>
-                <SelectValue placeholder="Selecione o tipo de projeto" />
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Escolha o tipo de projeto" />
               </SelectTrigger>
               <SelectContent>
                 {projectTypes.map((type) => (
@@ -315,26 +332,26 @@ ${basicPrompt}
             </Select>
           </div>
 
-          {/* Description */}
+          {/* Descrição do Projeto */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700">
+            <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+              <Zap className="w-4 h-4 text-purple-500" />
               Descrição do Projeto
             </label>
+            <p className="text-xs text-gray-500 mb-2">Descreva detalhadamente o que você quer criar</p>
             <Textarea
               placeholder="Descreva seu projeto em detalhes: propósito, funcionalidades principais, características especiais..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="min-h-[120px]"
+              className="min-h-[100px] resize-none"
             />
           </div>
 
-          {/* Visual Style */}
+          {/* Estilo Visual */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700">
-              Estilo Visual
-            </label>
+            <label className="text-sm font-medium text-gray-700">Estilo Visual</label>
             <Select value={visualStyle} onValueChange={setVisualStyle}>
-              <SelectTrigger>
+              <SelectTrigger className="w-full">
                 <SelectValue placeholder="Selecione o estilo visual" />
               </SelectTrigger>
               <SelectContent>
@@ -347,22 +364,20 @@ ${basicPrompt}
             </Select>
           </div>
 
-          {/* Color Palette */}
+          {/* Paleta de Cores */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <Palette className="w-5 h-5 text-indigo-500" />
-              <label className="text-sm font-medium text-gray-700">
-                Paleta de Cores
-              </label>
+              <Palette className="w-5 h-5 text-purple-500" />
+              <h3 className="text-sm font-medium text-gray-700">Paleta de Cores</h3>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-4">
               {colorPalettes.map((palette) => (
                 <div
                   key={palette.name}
-                  className={`p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 hover:scale-105 ${
+                  className={`p-3 border-2 rounded-lg cursor-pointer transition-all duration-200 ${
                     selectedPalette === palette.name
-                      ? 'border-indigo-500 ring-2 ring-indigo-200'
-                      : 'border-gray-200 hover:border-indigo-300'
+                      ? 'border-purple-500 bg-purple-50'
+                      : 'border-gray-200 hover:border-purple-300'
                   }`}
                   onClick={() => setSelectedPalette(palette.name)}
                 >
@@ -370,12 +385,12 @@ ${basicPrompt}
                     {palette.colors.map((color, index) => (
                       <div
                         key={index}
-                        className="w-6 h-6 rounded-full border border-white shadow-sm"
+                        className="w-5 h-5 rounded-full border border-gray-300"
                         style={{ backgroundColor: color }}
                       />
                     ))}
                   </div>
-                  <p className="text-sm font-medium text-gray-900">
+                  <p className="text-xs font-medium text-gray-800 text-center">
                     {palette.name}
                   </p>
                 </div>
@@ -383,12 +398,10 @@ ${basicPrompt}
             </div>
           </div>
 
-          {/* Special Elements */}
+          {/* Elementos Especiais */}
           <div className="space-y-4">
-            <label className="text-sm font-medium text-gray-700">
-              Elementos Especiais
-            </label>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <label className="text-sm font-medium text-gray-700">Elementos Especiais</label>
+            <div className="grid grid-cols-3 gap-3">
               {elements.map((element) => (
                 <div key={element} className="flex items-center space-x-2">
                   <Checkbox
@@ -398,7 +411,7 @@ ${basicPrompt}
                   />
                   <label
                     htmlFor={element}
-                    className="text-sm text-gray-700 cursor-pointer"
+                    className="text-xs text-gray-700 cursor-pointer leading-tight"
                   >
                     {element}
                   </label>
@@ -407,39 +420,36 @@ ${basicPrompt}
             </div>
           </div>
 
-          {/* Target Audience & Objectives */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Público-Alvo e Objetivos */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">
-                Público-Alvo
-              </label>
+              <label className="text-sm font-medium text-gray-700">Público-Alvo</label>
               <Input
                 placeholder="Ex: Profissionais de 25-40 anos, Empresários, Estudantes..."
                 value={targetAudience}
                 onChange={(e) => setTargetAudience(e.target.value)}
+                className="text-sm"
               />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">
-                Objetivos do Projeto
-              </label>
+              <label className="text-sm font-medium text-gray-700">Objetivos do Projeto</label>
               <Input
                 placeholder="Ex: Aumentar conversões, Melhorar experiência do usuário..."
                 value={objectives}
                 onChange={(e) => setObjectives(e.target.value)}
+                className="text-sm"
               />
             </div>
           </div>
 
-          {/* Specific Features */}
+          {/* Funcionalidades Específicas */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700">
-              Funcionalidades Específicas (Opcional)
-            </label>
+            <label className="text-sm font-medium text-gray-700">Funcionalidades Específicas (Opcional)</label>
             <Textarea
               placeholder="Ex: Sistema de autenticação, integração com API, formulários específicos..."
               value={specificFeatures}
               onChange={(e) => setSpecificFeatures(e.target.value)}
+              className="min-h-[80px] resize-none text-sm"
             />
           </div>
 
@@ -454,30 +464,30 @@ ${basicPrompt}
               Adicionar vídeo na hero section
             </label>
           </div>
+        </div>
+      </div>
 
-          {/* Generate Button */}
-          <div className="flex justify-center pt-8">
-            <Button
-              onClick={handleGenerateSuperPrompt}
-              disabled={isLoading || !projectType || !description}
-              size="lg"
-              className="px-12 py-3 text-lg font-semibold transform hover:scale-105 transition-all duration-200 shadow-xl"
-            >
-              {isLoading ? (
-                <>
-                  <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full mr-2" />
-                  Gerando Super Prompt...
-                </>
-              ) : (
-                <>
-                  <Star className="w-5 h-5 mr-2" />
-                  Gerar Super Prompt
-                </>
-              )}
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Botão Gerar Super Prompt */}
+      <div className="flex justify-center pt-4">
+        <Button
+          onClick={handleGenerateSuperPrompt}
+          disabled={isLoading || !projectType || !description}
+          size="lg"
+          className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-3 text-base font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
+        >
+          {isLoading ? (
+            <>
+              <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full mr-2" />
+              Gerando Super Prompt...
+            </>
+          ) : (
+            <>
+              <Star className="w-5 h-5 mr-2" />
+              Gerar Super Prompt
+            </>
+          )}
+        </Button>
+      </div>
     </div>
   )
 }

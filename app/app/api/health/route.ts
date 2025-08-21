@@ -1,14 +1,11 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma as db } from '@/lib/db';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
 
 export async function GET(request: NextRequest) {
   try {
     // Test database connection
-    await prisma.$queryRaw`SELECT 1`;
+    await db.$queryRaw`SELECT 1`;
     
     return NextResponse.json({
       status: 'healthy',

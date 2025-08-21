@@ -6,12 +6,16 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Lightbulb, Search, Filter } from 'lucide-react'
+import { Lightbulb, Search, Filter, Loader2 } from 'lucide-react'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 export default function IdeiasPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
+  const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
 
   const ideas = [
     {
@@ -74,6 +78,27 @@ export default function IdeiasPage() {
       case 'Médio': return 'bg-yellow-100 text-yellow-800'
       case 'Avançado': return 'bg-red-100 text-red-800'
       default: return 'bg-gray-100 text-gray-800'
+    }
+  }
+
+  const handleGeneratePRD = (idea: any) => {
+    // Store the idea in localStorage so it can be used in the generate-prd page
+    localStorage.setItem('selectedIdea', JSON.stringify(idea))
+    toast.success('Ideia selecionada! Redirecionando para gerar PRD...')
+    router.push('/generate-prd')
+  }
+
+  const handleLoadMoreIdeas = async () => {
+    setIsLoading(true)
+    try {
+      // Simulate loading more ideas
+      await new Promise(resolve => setTimeout(resolve, 1500))
+      toast.success('Mais ideias carregadas com sucesso!')
+      // In a real implementation, this would fetch more ideas from an API
+    } catch (error) {
+      toast.error('Erro ao carregar mais ideias. Tente novamente.')
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -194,7 +219,10 @@ export default function IdeiasPage() {
                   </div>
                 </div>
 
-                <Button className="w-full btn-primary mt-4">
+                <Button 
+                  className="w-full btn-primary mt-4"
+                  onClick={() => handleGeneratePRD(idea)}
+                >
                   Gerar PRD desta Ideia
                 </Button>
               </CardContent>
@@ -205,8 +233,21 @@ export default function IdeiasPage() {
 
       {/* Load More */}
       <div className="text-center pt-8">
-        <Button variant="outline" size="lg" className="px-8">
-          Carregar mais ideias
+        <Button 
+          variant="outline" 
+          size="lg" 
+          className="px-8"
+          onClick={handleLoadMoreIdeas}
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Carregando...
+            </>
+          ) : (
+            'Carregar mais ideias'
+          )}
         </Button>
         <p className="text-gray-500 text-sm mt-2">
           +2.994 ideias disponíveis

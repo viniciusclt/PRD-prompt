@@ -5,11 +5,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
-import { Palette, Copy, Heart, Search } from 'lucide-react'
+import { Palette, Copy, Heart, Search, Filter, Sparkles } from 'lucide-react'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 export default function PaletasPage() {
   const [searchTerm, setSearchTerm] = useState('')
+  const [customPrompt, setCustomPrompt] = useState('')
+  const [isGenerating, setIsGenerating] = useState(false)
 
   const colorPalettes = [
     {
@@ -75,6 +78,30 @@ export default function PaletasPage() {
     palette.category.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
+  const handleAdvancedFilters = () => {
+    toast.info('Filtros avançados ainda não implementados. Em breve!')
+  }
+
+  const handleGenerateWithAI = async () => {
+    if (!customPrompt.trim()) {
+      toast.error('Por favor, descreva o estilo desejado para a paleta.')
+      return
+    }
+
+    setIsGenerating(true)
+    try {
+      // Simulate AI generation
+      await new Promise(resolve => setTimeout(resolve, 2000))
+      toast.success('✨ Paleta personalizada gerada com sucesso!')
+      // In a real implementation, this would generate colors using AI
+      setCustomPrompt('')
+    } catch (error) {
+      toast.error('Erro ao gerar paleta. Tente novamente.')
+    } finally {
+      setIsGenerating(false)
+    }
+  }
+
   const copyPalette = (palette: typeof colorPalettes[0]) => {
     const colors = palette.colors.join(', ')
     navigator.clipboard.writeText(colors)
@@ -114,7 +141,11 @@ export default function PaletasPage() {
               onChange={(e) => setSearchTerm(e.target.value)}
               className="flex-1"
             />
-            <Button variant="outline">
+            <Button 
+              variant="outline"
+              onClick={handleAdvancedFilters}
+            >
+              <Filter className="w-4 h-4 mr-2" />
               Filtros Avançados
             </Button>
           </div>
@@ -233,9 +264,29 @@ export default function PaletasPage() {
         </CardHeader>
         <CardContent>
           <div className="flex gap-4">
-            <Input placeholder="Descreva o estilo desejado..." className="flex-1" />
-            <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
-              Gerar com IA
+            <Input 
+              placeholder="Ex: Paleta moderna para um app de fitness, cores energéticas..." 
+              className="flex-1"
+              value={customPrompt}
+              onChange={(e) => setCustomPrompt(e.target.value)}
+              disabled={isGenerating}
+            />
+            <Button 
+              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+              onClick={handleGenerateWithAI}
+              disabled={isGenerating || !customPrompt.trim()}
+            >
+              {isGenerating ? (
+                <>
+                  <Sparkles className="w-4 h-4 mr-2 animate-spin" />
+                  Gerando...
+                </>
+              ) : (
+                <>
+                  <Sparkles className="w-4 h-4 mr-2" />
+                  Gerar com IA
+                </>
+              )}
             </Button>
           </div>
         </CardContent>

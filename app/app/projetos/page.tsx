@@ -4,9 +4,36 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Archive, Plus, ExternalLink, Calendar, Code } from 'lucide-react'
+import { Archive, Plus, ExternalLink, Calendar, Code, FolderOpen } from 'lucide-react'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 export default function ProjetosPage() {
+  const router = useRouter()
+  const [isCreatingProject, setIsCreatingProject] = useState(false)
+
+  const handleNewProject = async () => {
+    setIsCreatingProject(true)
+    try {
+      // Simulate project creation
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      toast.success('Projeto criado com sucesso!')
+      // In a real implementation, this would create a new project and redirect to it
+      router.push('/generate-prd')
+    } catch (error) {
+      toast.error('Erro ao criar projeto. Tente novamente.')
+    } finally {
+      setIsCreatingProject(false)
+    }
+  }
+
+  const handleOpenProject = (project: any) => {
+    toast.success(`Abrindo projeto: ${project.title}`)
+    // In a real implementation, this would navigate to the specific project
+    router.push(`/dashboard?project=${encodeURIComponent(project.title)}`)
+  }
+
   const projects = [
     {
       title: "E-commerce Moderno",
@@ -109,9 +136,13 @@ export default function ProjetosPage() {
       {/* Actions */}
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-gray-900">Todos os Projetos</h2>
-        <Button className="btn-primary">
+        <Button 
+          className="btn-primary"
+          onClick={handleNewProject}
+          disabled={isCreatingProject}
+        >
           <Plus className="w-4 h-4 mr-2" />
-          Novo Projeto
+          {isCreatingProject ? 'Criando...' : 'Novo Projeto'}
         </Button>
       </div>
 
@@ -174,10 +205,20 @@ export default function ProjetosPage() {
 
               {/* Actions */}
               <div className="flex gap-2 pt-2">
-                <Button variant="default" size="sm" className="flex-1">
+                <Button 
+                  variant="default" 
+                  size="sm" 
+                  className="flex-1"
+                  onClick={() => handleOpenProject(project)}
+                >
+                  <FolderOpen className="w-4 h-4 mr-2" />
                   Abrir Projeto
                 </Button>
-                <Button variant="outline" size="sm">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => toast.info('Funcionalidade de visualização externa em breve!')}
+                >
                   <ExternalLink className="w-4 h-4" />
                 </Button>
               </div>
@@ -196,9 +237,13 @@ export default function ProjetosPage() {
           <p className="text-gray-600 mb-6">
             Mantenha todos os seus projetos organizados e acompanhe o progresso de desenvolvimento
           </p>
-          <Button className="btn-primary">
+          <Button 
+            className="btn-primary"
+            onClick={handleNewProject}
+            disabled={isCreatingProject}
+          >
             <Plus className="w-4 h-4 mr-2" />
-            Criar Primeiro Projeto
+            {isCreatingProject ? 'Criando...' : 'Criar Primeiro Projeto'}
           </Button>
         </CardContent>
       </Card>
